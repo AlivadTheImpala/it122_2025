@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/AlivadTheImpala/it122_2025/issues"
   },
-  "homepage": "https://github.com/AlivadTheImpala/it122_2025#readme"
+  "homepage": "https://github.com/AlivadTheImpala/it122_2025#readme",
+  "dependencies": {
+    "node": "^22.13.0"
+  }
 }
