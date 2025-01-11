@@ -11,7 +11,9 @@ const server = http.createServer((req, res) => {
       break;
     case "/about":
       res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("About");
+      res.end(
+        "My name is Brandon Davila and I am currently in my final quarter at Seattle Central. I'll be finishing up an Associates Degree for Web Development. It's been a challenging and hard few months, but I am proud of the progress I have made at learning programming concepts more deeply and look forward to the job search for my first Junior role!"
+      );
       break;
     default:
       res.writeHead(404, { "Content-Type": "text/plain" });
