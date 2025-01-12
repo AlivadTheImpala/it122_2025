@@ -1,0 +1,22 @@
+{
+  "name": "meadowlark",
+  "version": "1.0.0",
+  "description": "demo site to practice express development",
+  "main": "meadowlark.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlivadTheImpala/it122_2025.git"
+  },
+  "author": "brandon davila",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlivadTheImpala/it122_2025/issues"
+  },
+  "homepage": "https://github.com/AlivadTheImpala/it122_2025#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
