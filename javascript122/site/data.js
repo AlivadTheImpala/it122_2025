@@ -41,7 +41,8 @@ const getAll = () => {
 };
 
 const getItem = (id) => {
-  return albums.id;
+  return albums.find(album => album.id === id);
+ 
 };
 
 export { getAll };

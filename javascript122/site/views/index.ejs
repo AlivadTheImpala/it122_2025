@@ -6,8 +6,7 @@
    <ul>
     <% albums.forEach(function(album) { %>
       <li class="ui segment">
-        <strong><%= album.albumTitle %></strong>
-        is <%= album.artist %> at hogwarts.
+        <a href="/details/<%= album.id%>"><%= album.albumTitle %> by <%= album.artist %> </a>
       </li>
     <% }); %>
   </ul>
