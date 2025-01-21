@@ -1,0 +1,22 @@
+<%- include('./partials/header'); %>
+
+<main>
+ <div class="ui segment">
+   <h1>Albums</h1>
+   <ul>
+    <% albums.forEach(function(album) { %>
+      <li class="ui segment">
+        <strong><%= album.albumTitle %></strong>
+        is <%= album.artist %> at hogwarts.
+      </li>
+    <% }); %>
+  </ul>
+ </div>
+</main>
+
+<footer >
+  <%- include('./partials/footer'); %>
+</footer>
+
+  </body> 
+  </html>

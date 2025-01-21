@@ -40,4 +40,9 @@ const getAll = () => {
   return albums;
 };
 
+const getItem = (id) => {
+  return albums.id;
+};
+
 export { getAll };
+export { getItem };
