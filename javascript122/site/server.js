@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 
 //render details page
 app.get("/details/:id", (req, res) => {
-  const albumId = parseInt(req.params.id); // Convert ID from URL to a number
+  const albumId = parseInt(req.params.id); // Convert ID portion of URL to a number
   const album = getItem(albumId); // Fetch album using getItem function
 
   if (album) {
