@@ -2,6 +2,7 @@ import express from "express";
 import { getAll } from "./data.js";
 import { getItem } from "./data.js";
 import { connectionString } from "./credentials.js";
+
 const app = express();
 
 //Mongoose
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
   res.render("index", { albums: getAll() });
 });
 
-//render details page
+//render details page using a route parameter that captures id values.
 app.get("/details/:id", (req, res) => {
   const albumId = parseInt(req.params.id); // Convert ID portion of URL to a number
   const album = getItem(albumId); // Fetch album using getItem function
