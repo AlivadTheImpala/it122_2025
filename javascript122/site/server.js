@@ -1,7 +1,8 @@
 import express from "express";
-import { getAll } from "./data.js";
-import { getItem } from "./data.js";
+// import { getAll } from "./data.js";
+// import { getItem } from "./data.js";
 import { connectionString } from "./credentials.js";
+import router from "./routes/albums.js"
 
 const app = express();
 
@@ -19,23 +20,9 @@ const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 
-//render home page
-app.get("/", (req, res) => {
-  // let albums = getAll();
-  res.render("index", { albums: getAll() });
-});
+//Router
+app.use("/", router);
 
-//render details page using a route parameter that captures id values.
-app.get("/details/:id", (req, res) => {
-  const albumId = parseInt(req.params.id); // Convert ID portion of URL to a number
-  const album = getItem(albumId); // Fetch album using getItem function
-
-  if (album) {
-    res.render("details", { album }); // Pass album to details.ejs
-  } else {
-    res.status(404).send("Album not found"); // Handle case where album is not found
-  }
-});
 
 app.listen(port, () => {
   console.log(
