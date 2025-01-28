@@ -9,7 +9,7 @@ export const album_list = asyncHandler(async (req, res, next) => {
 
 
 export const album_detail = asyncHandler(async (req, res, next) => {
-    const album = await Promise.all(Album.findById(req.params.id).exec());
+    const album = await Album.findById(req.params.id).exec();
 
     if (album === null) {
         //no results
@@ -18,5 +18,5 @@ export const album_detail = asyncHandler(async (req, res, next) => {
         return next(err);
 
     }
-    res.render("details", { album: album, albumTitle: album.albumTitle });
+    res.render("details", { album: album });
 });
