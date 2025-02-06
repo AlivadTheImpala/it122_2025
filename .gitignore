@@ -131,3 +131,5 @@ dist
 
 # Mongo DB credentials
 credentials.js
+
+demos

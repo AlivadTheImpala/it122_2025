@@ -1,27 +1,24 @@
 import express from "express";
-// import { getAll } from "./data.js";
-// import { getItem } from "./data.js";
 import { connectionString } from "./credentials.js";
 import router from "./routes/albums.js"
-
+import mongoose from "mongoose";
+const port = process.env.PORT || 3000;
 const app = express();
 
-//Mongoose
-import mongoose from "mongoose";
 mongoose.set("strictQuery", false);
 const mongoDB = connectionString;
 
 main().catch((err) => console.log(err));
+
 async function main() {
   await mongoose.connect(mongoDB);
 }
 
-const port = process.env.PORT || 3000;
-
 app.set("view engine", "ejs");
+//Middleware
+app.use(router);
+app.use(express.json())
 
-//Router
-app.use("/", router);
 
 
 app.listen(port, () => {
