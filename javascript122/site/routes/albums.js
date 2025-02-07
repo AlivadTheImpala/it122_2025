@@ -16,16 +16,15 @@ router.get("/album/:id", (req, res, next) => {
     Album.findById({ "_id": req.params.id }).lean()
         .then((album) => {
             res.render("details", { album: album });
-        }).catch(err => next(err));
+        })
+        .catch(err => next(err));
 })
 
-
-// router.get('/api/albums', asyncHandler(async (req, res, next) => {
-//     await Album.find({}).exec();
-
-
-// }));
-
-
+router.get("/api/albums/", (req, res, next) => {
+    Album.find({}).lean()
+        .then((albums) => {
+            console.log(res.json(albums));
+        }).catch(err => next(err));
+})
 
 export default router;
