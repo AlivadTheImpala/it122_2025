@@ -2,6 +2,7 @@ import express from "express";
 import { connectionString } from "./credentials.js";
 import router from "./routes/albums.js"
 import mongoose from "mongoose";
+import cors from 'cors';
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -15,9 +16,13 @@ async function main() {
 }
 
 app.set("view engine", "ejs");
+
 //Middleware
 app.use(router);
 app.use(express.json())
+app.use('/api', cors()); // set Access-Control-Allow-Origin header for api route
+
+
 
 
 

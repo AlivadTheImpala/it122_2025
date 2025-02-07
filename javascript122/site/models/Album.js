@@ -10,11 +10,7 @@ const AlbumSchema = new Schema({
     genre: { type: String, required: true },
 });
 
-// Virtual for albums's URL
-AlbumSchema.virtual("url").get(function () {
-    // We don't use an arrow function as we'll need the this object
-    return `/details/${this._id}`;
-});
+
 
 const Album = mongoose.model("Album", AlbumSchema)
 export default Album;
