@@ -20,11 +20,35 @@ router.get("/album/:id", (req, res, next) => {
         .catch(err => next(err));
 })
 
+//api request for all albums
 router.get("/api/albums/", (req, res, next) => {
     Album.find({}).lean()
         .then((albums) => {
-            console.log(res.json(albums));
+            res.json(albums);
         }).catch(err => next(err));
 })
+
+//api request for one album based on title
+router.get("/api/albums/:title", (req, res, next) => {
+    Album.findOne({ "albumTitle": req.params.title }).lean()
+        .then((album) => {
+            res.json(album);
+        }).catch(err => next(err));
+})
+
+router.post("/api/albums/add", (req, res, next) => {
+    const { albumTitle, artist, released, genre } = req.body
+
+    const newAlbum = new Album({
+        albumTitle,
+        artist,
+        released,
+        genre,
+    });
+
+    newAlbum.save()
+        .then(album => res.status(201).json({ message: "Album Added Successfully", album }))
+        .catch(err => next(err));
+});
 
 export default router;
