@@ -37,17 +37,13 @@ router.get("/api/albums/:title", (req, res, next) => {
 })
 
 router.post("/api/albums/add", (req, res, next) => {
-    const { albumTitle, artist, released, genre } = req.body
-
-    const newAlbum = new Album({
-        albumTitle,
-        artist,
-        released,
-        genre,
-    });
-
-    newAlbum.save()
-        .then(album => res.status(201).json({ message: "Album Added Successfully", album }))
+    console.log(req.body);
+    // newAlbum.save()
+    Album.updateOne({ 'albumTitle': req.body.albumTitle }, req.body, { upsert: true }).lean()
+        .then((result) => {
+            console.log(result);
+            res.status(201).json({ message: "Album Added Successfully" })
+        })
         .catch(err => next(err));
 });
 

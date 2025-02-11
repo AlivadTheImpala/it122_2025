@@ -18,9 +18,10 @@ async function main() {
 app.set("view engine", "ejs");
 
 //Middleware
-app.use(router);
-app.use(express.json())
+app.use(express.json());
+
 app.use('/api', cors()); // set Access-Control-Allow-Origin header for api route
+app.use(router);
 
 
 
