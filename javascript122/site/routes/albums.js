@@ -11,6 +11,7 @@ router.get("/", (req, res, next) => {
         })
         .catch(err => next(err));
 });
+//end get /
 
 router.get("/album/:id", (req, res, next) => {
     Album.findById({ "_id": req.params.id }).lean()
@@ -18,7 +19,8 @@ router.get("/album/:id", (req, res, next) => {
             res.render("details", { album: album });
         })
         .catch(err => next(err));
-})
+});
+//end get /album/:id
 
 //api request for all albums
 router.get("/api/albums/", (req, res, next) => {
@@ -26,7 +28,8 @@ router.get("/api/albums/", (req, res, next) => {
         .then((albums) => {
             res.json(albums);
         }).catch(err => next(err));
-})
+});
+//end get api/albums
 
 //api request for one album based on title
 router.get("/api/albums/:title", (req, res, next) => {
@@ -34,7 +37,8 @@ router.get("/api/albums/:title", (req, res, next) => {
         .then((album) => {
             res.json(album);
         }).catch(err => next(err));
-})
+});
+//end get api/albums/:title
 
 router.post("/api/albums/add", (req, res, next) => {
     console.log(req.body);
@@ -42,16 +46,20 @@ router.post("/api/albums/add", (req, res, next) => {
     Album.updateOne({ 'albumTitle': req.body.albumTitle }, req.body, { upsert: true }).lean()
         .then((result) => {
             console.log(result);
+
             if (result.upsertedCount > 0) {
                 res.status(201).json({ message: "new entries added to database" });
             } else if (result.upsertedCount == 0 && result.modifiedCount > 0) {
-                res.status(201).json({ message: "entries modified" });
+                res.status(200).json({ message: "entries modified" });
             } else {
-                res.status(201).json({ message: "entries already exist" });
+                res.status(200).json({ message: "entries already exist" }); //if nothing is modified or upserted, then we just matched an existing entry. 
             }
 
         })
         .catch(err => next(err));
 });
+//end post api/albums/add
+
+//delete api rout to go here
 
 export default router;
