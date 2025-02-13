@@ -42,7 +42,14 @@ router.post("/api/albums/add", (req, res, next) => {
     Album.updateOne({ 'albumTitle': req.body.albumTitle }, req.body, { upsert: true }).lean()
         .then((result) => {
             console.log(result);
-            res.status(201).json({ message: "Album Added Successfully" })
+            if (result.upsertedCount > 0) {
+                res.status(201).json({ message: "new entries added to database" });
+            } else if (result.upsertedCount == 0 && result.modifiedCount > 0) {
+                res.status(201).json({ message: "entries modified" });
+            } else {
+                res.status(201).json({ message: "entries already exist" });
+            }
+
         })
         .catch(err => next(err));
 });
