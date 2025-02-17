@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+      integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        padding: 50px;
+      }
+    </style>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="mydiv"></div>
+
+    <script type="text/babel">
+      function AlbumRow({ album }) {}
+
+      function AlbumList({ albums }) {
+        return (
+          <ul>
+            <AlbumRow album={album}></AlbumRow>
+          </ul>
+        );
+      }
+
+      function AlbumContainer({ albums }) {
+        return (
+          <div>
+            <AlbumList albums={albums} />
+          </div>
+        );
+      }
+
+      export default function App() {
+        return <AlbumContainer albums={albums} />;
+      }
+      const container = document.getElementById("mydiv");
+      const root = ReactDOM.createRoot(container);
+      root.render(<AlbumContainer />);
+    </script>
+  </body>
+</html>

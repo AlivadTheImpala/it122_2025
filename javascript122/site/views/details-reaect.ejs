@@ -1,0 +1,21 @@
+<%- include('./partials/header'); %>
+
+<main>
+    <div class="ui segment">
+        <h1><%= album.albumTitle %></h1>
+        <h2>by <%= album.artist %></h2>
+
+        <p>Details</p>
+        <ul>
+            <li>Released: <%= album.released %></li>
+            <li>Genre: <%= album.genre%></li>
+        </ul>
+    </div>
+</main>
+
+<footer >
+    <%- include('./partials/footer'); %>
+  </footer>
+  
+    </body> 
+    </html>
