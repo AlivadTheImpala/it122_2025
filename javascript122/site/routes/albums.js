@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
     Album.find({}).lean()
         .then((albums) => {
-            res.render("index", { albums });
+            res.render("index-react", { albums: JSON.stringify(albums) });
         })
         .catch(err => next(err));
 });
@@ -41,8 +41,8 @@ router.get("/api/albums/:title", (req, res, next) => {
 //end get api/albums/:title
 
 router.post("/api/albums/add", (req, res, next) => {
-    console.log(req.body);
-    // newAlbum.save()
+    // console.log(req.body);
+
     Album.updateOne({ 'albumTitle': req.body.albumTitle }, req.body, { upsert: true }).lean()
         .then((result) => {
             console.log(result);
@@ -61,5 +61,13 @@ router.post("/api/albums/add", (req, res, next) => {
 //end post api/albums/add
 
 //delete api rout to go here
+
+router.delete("/api/album/remove", (req, res, next) => {
+    Album.deleteOne({ 'albumTitle': req.body.albumTitle }).lean()
+        .then((album) => {
+            res.json(album);
+        })
+        .catch(err => next(err))
+})
 
 export default router;

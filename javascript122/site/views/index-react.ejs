@@ -22,20 +22,25 @@
       crossorigin
     ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Music</title>
   </head>
 
   <body>
-    <div id="mydiv"></div>
+    <div id="root"></div>
 
     <script type="text/babel">
-      function AlbumRow({ album }) {}
+      function AlbumRow({ album }) {
+        return (
+          <li>
+            <a href="/album/{album._id}">
+              {album.albumTitle} by {album.artist}
+            </a>
+          </li>
+        );
+      }
 
       function AlbumList({ albums }) {
-        return (
-          <ul>
-            <AlbumRow album={album}></AlbumRow>
-          </ul>
-        );
+        return <ul></ul>;
       }
 
       function AlbumContainer({ albums }) {
@@ -46,12 +51,13 @@
         );
       }
 
-      export default function App() {
+      function App() {
         return <AlbumContainer albums={albums} />;
       }
-      const container = document.getElementById("mydiv");
+
+      const container = document.getElementById("root");
       const root = ReactDOM.createRoot(container);
-      root.render(<AlbumContainer />);
+      root.render(<App />);
     </script>
   </body>
 </html>
