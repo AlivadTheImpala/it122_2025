@@ -63,9 +63,12 @@ router.post("/api/albums/add", (req, res, next) => {
 //delete api rout to go here
 
 router.delete("/api/album/remove", (req, res, next) => {
-    Album.deleteOne({ 'albumTitle': req.body.albumTitle }).lean()
-        .then((album) => {
-            res.json(album);
+    Album.findOneAndDelete({ 'albumTitle': req.body.albumTitle })
+        .then((deletedAlbum) => {
+            if (!deletedAlbum) {
+                res.status(404).json({ error: "Album not found." })
+            }
+            res.json({ message: "Album deleted.", deletedAlbum });
         })
         .catch(err => next(err))
 })

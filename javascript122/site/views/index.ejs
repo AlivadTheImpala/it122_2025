@@ -3,7 +3,7 @@
 <main>
  <div class="ui segment">
    <h1>Albums</h1>
-   <ul>
+   <ul> 
     <% albums.forEach(function(album) { %>
       <li class="ui segment">
         <a href="/album/<%= album._id %>"><%= album.albumTitle %> by <%= album.artist %> </a>
