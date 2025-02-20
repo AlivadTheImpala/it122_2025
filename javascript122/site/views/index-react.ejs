@@ -25,35 +25,45 @@
     <title>Music</title>
   </head>
 
-  <body>
+  <body class="container">
+    <header>
+      <div class="ui inverted menu">
+        <a class="item" href="/"> Home </a>
+      </div>
+    </header>
+
     <div id="root"></div>
 
     <script type="text/babel">
-      function AlbumRow({ album }) {
-        return (
-          <li>
-            <a href="/album/{album._id}">
-              {album.albumTitle} by {album.artist}
+      const albumsData = <%- albums %>;
+            //albums is being passed in from our albums.js routes file
+            console.log(`This is the raw data`, albumsData);
+
+      const AlbumList = ({ albums }) => {
+        const albumItems = albums.map((album) =>
+        <li className="ui segment" key={album._id}>
+          <a href={`/album/${album._id}`}> {album.albumTitle} by {album.artist}
             </a>
-          </li>
-        );
-      }
+        </li>);
 
-      function AlbumList({ albums }) {
-        return <ul></ul>;
-      }
+        return <ul>{albumItems}</ul>;
+      };
 
-      function AlbumContainer({ albums }) {
+      const AlbumContainer = ({ albums }) => {
+        console.log(`This is from AlbumContainer`, albums);
         return (
           <div>
+
             <AlbumList albums={albums} />
           </div>
         );
-      }
+      };
 
-      function App() {
-        return <AlbumContainer albums={albums} />;
-      }
+      const App = () => {
+        return (
+
+        <AlbumContainer albums={albumsData} /> )
+      };
 
       const container = document.getElementById("root");
       const root = ReactDOM.createRoot(container);
