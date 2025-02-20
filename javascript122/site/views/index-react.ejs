@@ -36,8 +36,8 @@
 
     <script type="text/babel">
       const albumsData = <%- albums %>;
-            //albums is being passed in from our albums.js routes file
-            console.log(`This is the raw data`, albumsData);
+            //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props
+            // console.log(`This is the raw data`, albumsData);
 
       const AlbumList = ({ albums }) => {
         const albumItems = albums.map((album) =>
@@ -50,7 +50,7 @@
       };
 
       const AlbumContainer = ({ albums }) => {
-        console.log(`This is from AlbumContainer`, albums);
+        // console.log(`This is from AlbumContainer`, albums);
         return (
           <div>
 
