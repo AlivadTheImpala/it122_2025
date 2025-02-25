@@ -39,12 +39,12 @@
                 //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props.
                 // console.log(`This is the raw data`, albumsData);
 
-          const AlbumForm = ()=> {
+          const AlbumForm = ({item})=> {
             return (
               <form action="">
-                <input className="ui segment"type="text" placeholder="Search by artist" name="artist"/>
+                <input className="ui segment"type="text" placeholder={item.artist} name="artist"/>
 
-                <input className="ui segment"type="text" placeholder="Search by album" name="albumTitle"/>
+                <input className="ui segment"type="text" placeholder={item.albumTitle} name="albumTitle"/>
                 <button className="ui button"type="submit">Submit</button>
               </form>
 
@@ -58,7 +58,7 @@
             return(
             <div className="ui segment">
               <h2>Details for {item.albumTitle}</h2>
-              <AlbumForm />
+              <AlbumForm item={item}/>
               <li>Release Date: {item.released}</li>
               <li>Genre: {item.genre}</li>
 
