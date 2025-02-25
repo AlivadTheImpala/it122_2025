@@ -35,39 +35,81 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const albumsData = <%- albums %>;
-            //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props
-            // console.log(`This is the raw data`, albumsData);
+          const albumsData = <%- albums %>;
+                //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props.
+                // console.log(`This is the raw data`, albumsData);
 
-      const AlbumList = ({ albums }) => {
-        const albumItems = albums.map((album) =>
-        <li className="ui segment" key={album._id}>
-          <a href={`/album/${album._id}`}> {album.albumTitle} by {album.artist}
-            </a>
-        </li>);
+          const AlbumForm = ()=> {
+            return (
+              <form action="">
+                <input className="ui segment"type="text" placeholder="Search by artist" name="artist"/>
 
-        return <ul>{albumItems}</ul>;
-      };
+                <input className="ui segment"type="text" placeholder="Search by album" name="albumTitle"/>
+                <button className="ui button"type="submit">Submit</button>
+              </form>
 
-      const AlbumContainer = ({ albums }) => {
-        // console.log(`This is from AlbumContainer`, albums);
-        return (
-          <div>
+            )
+          }
 
-            <AlbumList albums={albums} />
-          </div>
-        );
-      };
+          const DetailsContainer = ({item}) => {
+            if (!item) {
+            return <p>Select an album to see details.</p>;
+      }
+            return(
+            <div className="ui segment">
+              <h2>Details for {item.albumTitle}</h2>
+              <AlbumForm />
+              <li>Release Date: {item.released}</li>
+              <li>Genre: {item.genre}</li>
 
-      const App = () => {
-        return (
+            </div>
+          )};
 
-        <AlbumContainer albums={albumsData} /> )
-      };
 
-      const container = document.getElementById("root");
-      const root = ReactDOM.createRoot(container);
-      root.render(<App />);
+          const AlbumList = ({ albums, clickHandler }) => {
+            const albumItems = albums.map((album) =>
+            <li className="ui segment" key={album._id} onClick={() => clickHandler(album)}>
+              {album.albumTitle} by {album.artist}
+            </li>);
+
+            return <ul>{albumItems}</ul>;
+          };
+
+          const AlbumContainer = ({albums, clickHandler}) => {
+            // console.log(`This is from AlbumContainer`, albums);
+            return (
+              <div className="ui segment">
+
+                <AlbumList albums={albums} clickHandler={clickHandler}/>
+              </div>
+            );
+          };
+
+          //parent component
+          const App = () => {
+            // console.log(albumsData);
+
+            const [selectedItem, setSelectedItem] = React.useState();
+
+            // const albumClicked = (e) => {
+            //   let found = albumsData.find((album)=> {
+            //     return album.albumTitle == e.target.innerText});
+            //     setSelectedItem(found);
+            //   }
+
+
+
+            return (
+            <div>
+            <AlbumContainer albums={albumsData} clickHandler={setSelectedItem}/>
+            <DetailsContainer item={selectedItem}/>
+            </div>
+           )
+          };
+
+          const container = document.getElementById("root");
+          const root = ReactDOM.createRoot(container);
+          root.render(<App />);
     </script>
   </body>
 </html>

@@ -60,7 +60,7 @@ router.post("/api/albums/add", (req, res, next) => {
 });
 //end post api/albums/add
 
-//delete api rout to go here
+//api to delete one album based on albumTitle
 
 router.delete("/api/album/remove", (req, res, next) => {
     Album.findOneAndDelete({ 'albumTitle': req.body.albumTitle })
