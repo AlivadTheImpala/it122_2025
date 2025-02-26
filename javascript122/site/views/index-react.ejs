@@ -39,26 +39,45 @@
                 //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props.
                 // console.log(`This is the raw data`, albumsData);
 
-          const AlbumForm = ({item})=> {
+          const AlbumForm = ({item, changeHandler})=> {
             return (
-              <form action="">
-                <input className="ui segment"type="text" placeholder={item.artist} name="artist"/>
 
-                <input className="ui segment"type="text" placeholder={item.albumTitle} name="albumTitle"/>
-                <button className="ui button"type="submit">Submit</button>
+              <form action="">
+
+                <input
+                className="ui segment"
+                type="text"
+                placeholder="Search Artist"
+                name="artist"
+                value={item.artist || ""}
+                onChange={changeHandler}/>
+
+                <input
+                className="ui segment"
+                type="text"
+                placeholder="Search Album"
+                name="albumTitle"
+                value={item.albumTitle || ""}
+                onChange={changeHandler}/>
+
+                <button className="ui button" type="search">clear</button>
+
               </form>
+
 
             )
           }
 
-          const DetailsContainer = ({item}) => {
-            if (!item) {
-            return <p>Select an album to see details.</p>;
-      }
+          const DetailsContainer = ({item, changeHandler}) => {
+      //       if (!item) {
+      //       return <p>Select an album to see details.</p>;
+      // }
+      console.log(item)
+
             return(
             <div className="ui segment">
-              <h2>Details for {item.albumTitle}</h2>
-              <AlbumForm item={item}/>
+              <h2>Details for {item.albumTitle} by {item.artist}</h2>
+              <AlbumForm item={item} changeHandler={changeHandler}/>
               <li>Release Date: {item.released}</li>
               <li>Genre: {item.genre}</li>
 
@@ -89,20 +108,20 @@
           const App = () => {
             // console.log(albumsData);
 
-            const [selectedItem, setSelectedItem] = React.useState();
-
-            // const albumClicked = (e) => {
-            //   let found = albumsData.find((album)=> {
-            //     return album.albumTitle == e.target.innerText});
-            //     setSelectedItem(found);
-            //   }
+            const [selectedItem, setSelectedItem] = React.useState("");
 
 
+            const handleChange = (e) => {
+              setSelectedItem((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.value,
+              }));
+            };
 
             return (
             <div>
             <AlbumContainer albums={albumsData} clickHandler={setSelectedItem}/>
-            <DetailsContainer item={selectedItem}/>
+            <DetailsContainer item={selectedItem} changeHandler={handleChange}/>
             </div>
            )
           };
