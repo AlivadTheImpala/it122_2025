@@ -74,9 +74,18 @@
               Save
             </button>
 
+            <button
+              className="ui button"
+              name="delete"
+              onClick={props.deleteItem}
+              type="button"
+            >
+              Delete
+            </button>
+
             {/*
             
-            <button name="delete" onClick={props.deleteItem}>Delete</button> */}
+             */}
           </form>
         );
       };
@@ -94,6 +103,7 @@
               changeHandler={props.changeHandler}
               clearForm={props.clearForm}
               saveItem={props.saveItem}
+              deleteItem={props.deleteItem}
             />
             <li>Release Date: {props.item.released}</li>
             <li>Genre: {props.item.genre}</li>
@@ -177,6 +187,22 @@
             });
         };
 
+        const deleteItem = () => {
+          let id = selectedItem._id;
+          // delete item from DB
+          fetch(`/api/album/remove/${id}`, { method: "DELETE" })
+            // .then((res) => res.json())
+            .then((data) => {
+              // remove item from UI list
+              const newItems = items.filter((item) => {
+                return item._id !== id;
+              });
+              setItems(newItems);
+              // clear form
+              setSelectedItem({});
+            });
+        };
+
         return (
           <div>
             <AlbumContainer albums={items} clickHandler={setSelectedItem} />
@@ -185,6 +211,7 @@
               changeHandler={handleChange}
               clearForm={clearForm}
               saveItem={saveItem}
+              deleteItem={deleteItem}
             />
           </div>
         );
