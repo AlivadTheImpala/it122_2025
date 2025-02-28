@@ -190,7 +190,11 @@
         const deleteItem = () => {
           let id = selectedItem._id;
           // delete item from DB
-          fetch(`/api/album/remove/${id}`, { method: "DELETE" })
+          fetch(`/api/album/remove`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(selectedItem),
+          })
             // .then((res) => res.json())
             .then((data) => {
               // remove item from UI list
