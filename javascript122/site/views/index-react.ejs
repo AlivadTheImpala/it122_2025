@@ -35,7 +35,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const AlbumForm = ({ item, changeHandler }) => {
+      const AlbumForm = (props) => {
         return (
           <form action="">
             <input
@@ -43,8 +43,8 @@
               type="text"
               placeholder="Search Artist"
               name="artist"
-              value={item.artist || ""}
-              onChange={changeHandler}
+              value={props.item.artist || ""}
+              onChange={props.changeHandler}
             />
 
             <input
@@ -52,35 +52,58 @@
               type="text"
               placeholder="Search Album"
               name="albumTitle"
-              value={item.albumTitle || ""}
-              onChange={changeHandler}
+              value={props.item.albumTitle || ""}
+              onChange={props.changeHandler}
             />
 
-            <button className="ui button" type="search">
-              clear
+            <button
+              className="ui button"
+              name="clear"
+              onClick={props.clearForm}
+              type="button"
+            >
+              Clear
             </button>
+
+            <button
+              className="ui button"
+              name="save"
+              onClick={props.saveItem}
+              type="button"
+            >
+              Save
+            </button>
+
+            {/*
+            
+            <button name="delete" onClick={props.deleteItem}>Delete</button> */}
           </form>
         );
       };
 
-      const DetailsContainer = ({ item, changeHandler }) => {
-        console.log(item);
+      const DetailsContainer = (props) => {
+        console.log("Hello", props.item);
 
         return (
           <div className="ui segment">
             <h2>
-              Details for {item.albumTitle} by {item.artist}
+              Details for {props.item.albumTitle} by {props.item.artist}
             </h2>
-            <AlbumForm item={item} changeHandler={changeHandler} />
-            <li>Release Date: {item.released}</li>
-            <li>Genre: {item.genre}</li>
+            <AlbumForm
+              item={props.item}
+              changeHandler={props.changeHandler}
+              clearForm={props.clearForm}
+              saveItem={props.saveItem}
+            />
+            <li>Release Date: {props.item.released}</li>
+            <li>Genre: {props.item.genre}</li>
           </div>
         );
       };
 
       const AlbumList = ({ albums, clickHandler }) => {
         const albumItems = albums.map((album) => (
-          // passes the album object to clickHandler(setSelectedItem)
+          // onClick passes the album object to clickHandler(setSelectedItem) setting the selected item to the album object itself.
           <li
             className="ui segment"
             key={album._id}
@@ -105,7 +128,7 @@
       //parent component
       const App = () => {
         const [items, setItems] = React.useState([]);
-        const [selectedItem, setSelectedItem] = React.useState("");
+        const [selectedItem, setSelectedItem] = React.useState({});
 
         //fetch data from our albums database
         React.useEffect(() => {
@@ -126,12 +149,42 @@
           }));
         };
 
+        const clearForm = () => {
+          setSelectedItem({});
+        };
+
+        const saveItem = () => {
+          if (!selectedItem.albumTitle) {
+            return;
+          }
+          fetch("/api/albums/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(selectedItem),
+          })
+            .then(console.log(selectedItem))
+            // .then((res) => res.json())
+            .then((data) => {
+              // if item has no _id, it wasn't previously saved in DB
+              if (!selectedItem._id) {
+                selectedItem._id = data._id;
+                setSelectedItem(selectedItem);
+                // update items list
+                let newItems = [...items];
+                newItems.push(selectedItem);
+                setItems(newItems);
+              }
+            });
+        };
+
         return (
           <div>
             <AlbumContainer albums={items} clickHandler={setSelectedItem} />
             <DetailsContainer
               item={selectedItem}
               changeHandler={handleChange}
+              clearForm={clearForm}
+              saveItem={saveItem}
             />
           </div>
         );
