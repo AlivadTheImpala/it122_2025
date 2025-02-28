@@ -35,100 +35,111 @@
     <div id="root"></div>
 
     <script type="text/babel">
-          const albumsData = <%- albums %>;
-                //albums is being passed in from our albums.js routes and saved to albumData to be used for our component props.
-                // console.log(`This is the raw data`, albumsData);
+      const AlbumForm = ({ item, changeHandler }) => {
+        return (
+          <form action="">
+            <input
+              className="ui segment"
+              type="text"
+              placeholder="Search Artist"
+              name="artist"
+              value={item.artist || ""}
+              onChange={changeHandler}
+            />
 
-          const AlbumForm = ({item, changeHandler})=> {
-            return (
+            <input
+              className="ui segment"
+              type="text"
+              placeholder="Search Album"
+              name="albumTitle"
+              value={item.albumTitle || ""}
+              onChange={changeHandler}
+            />
 
-              <form action="">
+            <button className="ui button" type="search">
+              clear
+            </button>
+          </form>
+        );
+      };
 
-                <input
-                className="ui segment"
-                type="text"
-                placeholder="Search Artist"
-                name="artist"
-                value={item.artist || ""}
-                onChange={changeHandler}/>
+      const DetailsContainer = ({ item, changeHandler }) => {
+        console.log(item);
 
-                <input
-                className="ui segment"
-                type="text"
-                placeholder="Search Album"
-                name="albumTitle"
-                value={item.albumTitle || ""}
-                onChange={changeHandler}/>
+        return (
+          <div className="ui segment">
+            <h2>
+              Details for {item.albumTitle} by {item.artist}
+            </h2>
+            <AlbumForm item={item} changeHandler={changeHandler} />
+            <li>Release Date: {item.released}</li>
+            <li>Genre: {item.genre}</li>
+          </div>
+        );
+      };
 
-                <button className="ui button" type="search">clear</button>
+      const AlbumList = ({ albums, clickHandler }) => {
+        const albumItems = albums.map((album) => (
+          // passes the album object to clickHandler(setSelectedItem)
+          <li
+            className="ui segment"
+            key={album._id}
+            onClick={() => clickHandler(album)}
+          >
+            {album.albumTitle} by {album.artist}
+          </li>
+        ));
 
-              </form>
+        return <ul>{albumItems}</ul>;
+      };
 
+      const AlbumContainer = ({ albums, clickHandler }) => {
+        // console.log(`This is from AlbumContainer`, albums);
+        return (
+          <div className="ui segment">
+            <AlbumList albums={albums} clickHandler={clickHandler} />
+          </div>
+        );
+      };
 
-            )
-          }
+      //parent component
+      const App = () => {
+        const [items, setItems] = React.useState([]);
+        const [selectedItem, setSelectedItem] = React.useState("");
 
-          const DetailsContainer = ({item, changeHandler}) => {
-      //       if (!item) {
-      //       return <p>Select an album to see details.</p>;
-      // }
-      console.log(item)
-
-            return(
-            <div className="ui segment">
-              <h2>Details for {item.albumTitle} by {item.artist}</h2>
-              <AlbumForm item={item} changeHandler={changeHandler}/>
-              <li>Release Date: {item.released}</li>
-              <li>Genre: {item.genre}</li>
-
-            </div>
-          )};
-
-
-          const AlbumList = ({ albums, clickHandler }) => {
-            const albumItems = albums.map((album) =>
-            <li className="ui segment" key={album._id} onClick={() => clickHandler(album)}>
-              {album.albumTitle} by {album.artist}
-            </li>);
-
-            return <ul>{albumItems}</ul>;
+        //fetch data from our albums database
+        React.useEffect(() => {
+          const fetchData = async () => {
+            fetch("/api/albums/")
+              .then((res) => res.json())
+              .then((json) => {
+                setItems(json);
+              });
           };
+          fetchData();
+        }, []);
 
-          const AlbumContainer = ({albums, clickHandler}) => {
-            // console.log(`This is from AlbumContainer`, albums);
-            return (
-              <div className="ui segment">
+        const handleChange = (e) => {
+          setSelectedItem((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+          }));
+        };
 
-                <AlbumList albums={albums} clickHandler={clickHandler}/>
-              </div>
-            );
-          };
+        return (
+          <div>
+            <AlbumContainer albums={items} clickHandler={setSelectedItem} />
+            <DetailsContainer
+              item={selectedItem}
+              changeHandler={handleChange}
+            />
+          </div>
+        );
+      };
 
-          //parent component
-          const App = () => {
-            // console.log(albumsData);
-
-            const [selectedItem, setSelectedItem] = React.useState("");
-
-
-            const handleChange = (e) => {
-              setSelectedItem((prev) => ({
-                ...prev,
-                [e.target.name]: e.target.value,
-              }));
-            };
-
-            return (
-            <div>
-            <AlbumContainer albums={albumsData} clickHandler={setSelectedItem}/>
-            <DetailsContainer item={selectedItem} changeHandler={handleChange}/>
-            </div>
-           )
-          };
-
-          const container = document.getElementById("root");
-          const root = ReactDOM.createRoot(container);
-          root.render(<App />);
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
     </script>
   </body>
 </html>
